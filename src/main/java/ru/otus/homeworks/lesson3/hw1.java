@@ -1,5 +1,6 @@
 package ru.otus.homeworks.lesson3;
 
+import java.util.Random;
 import java.util.Scanner;
 
 public class hw1 {
@@ -83,6 +84,7 @@ public class hw1 {
     */
     public static void enterNumberAndExecute() {
         Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
         System.out.println("Введите число от 1 до 5");
         int enteredValue = scanner.nextInt();
         if (enteredValue > 0 && enteredValue < 6) {
@@ -100,7 +102,7 @@ public class hw1 {
                     compareNumbers();
                     break;
                 case 5:
-                    addOrSubtractAndPrint((int) (Math.random() * 10), (int) (Math.random() * 10), true);
+                    addOrSubtractAndPrint((int) (Math.random() * 10), (int) (Math.random() * 10), random.nextBoolean());
                     break;
             }
         } else {
