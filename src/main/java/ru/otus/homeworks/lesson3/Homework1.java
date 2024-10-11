@@ -3,7 +3,7 @@ package ru.otus.homeworks.lesson3;
 import java.util.Random;
 import java.util.Scanner;
 
-public class hw1 {
+public class Homework1 {
     public static void main(String[] args) {
         greetings(); // 1
         checkSign(1, 3, 4); // 2
@@ -44,7 +44,7 @@ public class hw1 {
         int data = 33;
         if (data <= 10) {
             System.out.println("Красный");
-        } else if (data > 10 && data <= 20) {
+        } else if (data <= 20) {
             System.out.println("Желтый");
         } else {
             System.out.println("Зеленый");
