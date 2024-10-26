@@ -66,15 +66,13 @@ public class Homework3 {
     private static void printSquare(int size) {
         System.out.println("\nЗадача 2");
         System.out.println("Значение size = " + size);
-        String[][] square = new String[size][size];
         for (int i = 0; i < size; i++) {
             for (int k = 0; k < size; k++) {
                 if ((i == 0 || i == (size - 1)) || (k == 0 || k == (size - 1))) {
-                    square[i][k] = "*";
+                    System.out.print("*");
                 } else {
-                    square[i][k] = " ";
+                    System.out.print(" ");
                 }
-                System.out.print(square[i][k]);
             }
             System.out.println();
         }
@@ -119,14 +117,13 @@ public class Homework3 {
      */
     private static int calculateArraySecondRowSum(int[][] array) {
         System.out.println("\nЗадача 5");
-        if (array.length > 1) {
-            int secondRowSum = array[1][0];
-            for (int i = 1; i < array[1].length; i++) {
-                secondRowSum += array[1][i];
-            }
-            return secondRowSum;
-        } else {
+        if (array.length < 2) {
             return -1;
         }
+        int secondRowSum = array[1][0];
+        for (int i = 1; i < array[1].length; i++) {
+            secondRowSum += array[1][i];
+        }
+        return secondRowSum;
     }
 }
