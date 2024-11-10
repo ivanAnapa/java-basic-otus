@@ -11,10 +11,10 @@ public class Horse extends Animal {
             return -1;
         }
         System.out.println("Заплыв начат. Предстоящая дистанция: " + distance + "м");
-        if ((endurance * 4) < distance) {
+        if ((endurance / 4) < distance) {
             System.out.println("Расстояние слишком большое. Плавание закончено: выносливости хватило на "
-                    + (endurance * 4) + "м");
-            System.out.println("До финиша оставалось " + (distance - (endurance * 4))
+                    + (endurance / 4) + "м");
+            System.out.println("До финиша оставалось " + (distance - (endurance / 4))
                     + "м, но у животного появилось состояние усталости");
             endurance = 0;
             return -1;

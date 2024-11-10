@@ -13,8 +13,8 @@ public class Dog extends Animal {
         System.out.println("Заплыв начат. Предстоящая дистанция: " + distance + "м");
         if ((endurance * 2) < distance) {
             System.out.println("Расстояние слишком большое. Плавание закончено: выносливости хватило на "
-                    + (endurance * 2) + "м");
-            System.out.println("До финиша оставалось " + (distance - (endurance * 2))
+                    + (endurance / 2) + "м");
+            System.out.println("До финиша оставалось " + (distance - (endurance / 2))
                     + "м, но у животного появилось состояние усталости");
             endurance = 0;
             return -1;

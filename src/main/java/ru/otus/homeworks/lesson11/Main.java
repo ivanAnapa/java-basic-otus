@@ -47,6 +47,7 @@ public class Main {
         horse.info();
         horse.swim(100);
         horse.info();
+        horse.swim(100);
         horse.run(60);
         horse.swim(10);
     }
