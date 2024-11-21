@@ -12,8 +12,8 @@ public class Car extends Transport {
     }
 
     public boolean tryMove(int distance, Area area) {
-        if (!area.getIsAvailableForCar()) {
-            System.out.print("Тип местности " + area.name() + " не подходит для машины. ");
+        if (area.equals(Area.Forest) || area.equals(Area.Swamp)) {
+            System.out.print("Тип местности '" + area.getAreaRuName() + "' не подходит для машины. ");
             return false;
         }
         // Считаем, что на 1м дистанции машина тратит 2л топлива
@@ -21,7 +21,7 @@ public class Car extends Transport {
             System.out.print("Расстояние слишком большое, бензина не хватит. ");
             return false;
         }
-        System.out.print("Расстояние " + distance + " успешно преодолено на " + getTransportName() + " по типу местности " + area.name() + ". ");
+        System.out.print("Расстояние " + distance + " успешно преодолено на " + getTransportName() + " по типу местности '" + area.getAreaRuName() + "'. ");
         reduceEnergy(distance * 2);
         return true;
     }

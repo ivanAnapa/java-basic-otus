@@ -1,40 +1,17 @@
 package ru.otus.homeworks.lesson13;
 
 public enum Area {
-    Forest(true, true, false, true),
-    Plain(true, true, true, true),
-    Swamp(false, true, false, false);
+    Forest("Лес"),
+    Plain("Поле"),
+    Swamp("Болото");
 
-    private boolean isAvailableForBicycle;
-    private boolean isAvailableForAllTerrainVehicle;
-    private boolean isAvailableForCar;
-    private boolean isAvailableForHorse;
+    private final String areaNameRu;
 
-    public boolean getIsAvailableForBicycle() {
-        return isAvailableForBicycle;
+    public String getAreaRuName() {
+        return areaNameRu;
     }
 
-    public boolean getIsAvailableForAllTerrainVehicle() {
-        return isAvailableForAllTerrainVehicle;
+    Area(String areaNameRu) {
+        this.areaNameRu = areaNameRu;
     }
-
-    public boolean getIsAvailableForCar() {
-        return isAvailableForCar;
-    }
-
-    public boolean getIsAvailableForHorse() {
-        return isAvailableForHorse;
-    }
-
-    Area(
-            boolean isAvailableForBicycle,
-            boolean isAvailableForAllTerrainVehicle,
-            boolean isAvailableForCar,
-            boolean isAvailableForHorse) {
-        this.isAvailableForBicycle = isAvailableForBicycle;
-        this.isAvailableForAllTerrainVehicle = isAvailableForAllTerrainVehicle;
-        this.isAvailableForCar = isAvailableForCar;
-        this.isAvailableForHorse = isAvailableForHorse;
-    }
-
 }

@@ -11,15 +11,15 @@ public class Horse extends Transport {
     }
 
     public boolean tryMove(int distance, Area area) {
-        if (!area.getIsAvailableForHorse()) {
-            System.out.print("Тип местности не подходит для " + transportName + ". ");
+        if (area.equals(Area.Swamp)) {
+            System.out.print("Тип местности '" + area.getAreaRuName() + "' не подходит для " + transportName + ". ");
             return false;
         }
         if (currentEnergy - distance < 0) {
             System.out.print("Расстояние сслишком большое, энергии не хватит. ");
             return false;
         }
-        System.out.print("Расстояние " + distance + " успешно преодолено по " + area.name() + " на лошади. ");
+        System.out.print("Расстояние " + distance + " м успешно преодолено по '" + area.getAreaRuName() + "' на лошади. ");
         reduceEnergy(distance);
         return true;
     }

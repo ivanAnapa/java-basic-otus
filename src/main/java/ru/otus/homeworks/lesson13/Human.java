@@ -6,7 +6,7 @@ public class Human {
     private final String name;
     private Transport currentTransport;
 
-    private static int energy;
+    private int energy;
 
     public Human(String name) {
         this.name = name;
@@ -14,11 +14,11 @@ public class Human {
         energy = 100;
     }
 
-    public static int getEnergy() {
+    public int getEnergy() {
         return energy;
     }
 
-    public static boolean reduceEnergy(int humanEnergySpent) {
+    public boolean reduceEnergy(int humanEnergySpent) {
         if (energy < humanEnergySpent) {
             System.out.println("У человека нет достаточного запаса сил");
             return false;
@@ -49,7 +49,7 @@ public class Human {
             return;
         }
         if (currentTransport == null) {
-            System.out.println("Человек идет пешком расстояние " + distance + "м по " + area.name() + " и не устает");
+            System.out.println("Человек идет пешком расстояние " + distance + "м по '" + area.getAreaRuName() + "' и не устает");
             return;
         }
         if (!currentTransport.tryMove(distance, area)) {

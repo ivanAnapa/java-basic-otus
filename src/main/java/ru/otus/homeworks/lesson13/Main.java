@@ -24,7 +24,7 @@ public class Main {
         Human vasiliy = new Human("Василий");
         Transport[] transports = {
                 new Car("Audi"),
-                new Bicycle("Desna"),
+                new Bicycle("Desna", vasiliy),
                 new Horse("Veterok"),
                 new AllTerrainVehicle("Buggy")
         };

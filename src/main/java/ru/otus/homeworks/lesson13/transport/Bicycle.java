@@ -4,27 +4,28 @@ import ru.otus.homeworks.lesson13.Area;
 import ru.otus.homeworks.lesson13.Human;
 
 public class Bicycle extends Transport {
+/*    public Bicycle(Human human) {
+        currentEnergy = human.getEnergy();
+    }*/
+    Human humanLocal;
 
-    public Bicycle() {
-        currentEnergy = Human.getEnergy();
-    }
-
-    public Bicycle(String bicycleModel) {
+    public Bicycle(String bicycleModel, Human human) {
         transportName = bicycleModel;
+        humanLocal = human;
     }
 
     public boolean tryMove(int distance, Area area) {
-        if (!area.getIsAvailableForBicycle()) {
-            System.out.print("Тип местности " + area.name() + " не подходит для велосипеда " + transportName + ". ");
+        if (area.equals(Area.Swamp)) {
+            System.out.print("Тип местности '" + area.getAreaRuName() + "' не подходит для велосипеда " + transportName + ". ");
             return false;
         }
         // Считаем, что на 1м дистанции велосипед тратит 1ед энергии человека
-        if ((Human.getEnergy() - distance) < 0) {
+        if ((humanLocal.getEnergy() - distance) < 0) {
             System.out.print("Расстояние слишком большое, сил человека не хватит. ");
             return false;
         }
-        System.out.print("Расстояние " + distance + " успешно преодолено по " + area.name() + " на велосипеде. ");
-        Human.reduceEnergy(distance);
+        System.out.print("Расстояние " + distance + " успешно преодолено по '" + area.getAreaRuName() + "' на велосипеде. ");
+        humanLocal.reduceEnergy(distance);
         return true;
     }
 }
