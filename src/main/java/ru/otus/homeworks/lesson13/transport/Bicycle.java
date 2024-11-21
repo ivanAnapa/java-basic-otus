@@ -4,9 +4,6 @@ import ru.otus.homeworks.lesson13.Area;
 import ru.otus.homeworks.lesson13.Human;
 
 public class Bicycle extends Transport {
-/*    public Bicycle(Human human) {
-        currentEnergy = human.getEnergy();
-    }*/
     Human humanLocal;
 
     public Bicycle(String bicycleModel, Human human) {
