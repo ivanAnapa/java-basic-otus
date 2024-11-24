@@ -5,7 +5,6 @@ import ru.otus.homeworks.lesson13.transport.Transport;
 public class Human {
     private final String name;
     private Transport currentTransport;
-
     private int energy;
 
     public Human(String name) {
@@ -18,29 +17,28 @@ public class Human {
         return energy;
     }
 
-    public boolean reduceEnergy(int humanEnergySpent) {
-        if (energy < humanEnergySpent) {
-            System.out.println("У человека нет достаточного запаса сил");
-            return false;
+    public void reduceEnergy(int energySpent) {
+        if (energy < energySpent) {
+            System.out.println("У человека с именем " + name + " нет достаточного запаса сил");
+            return;
         }
-        energy -= humanEnergySpent;
-        System.out.println("Человек потратил " + humanEnergySpent + " сил");
-        return true;
+        energy -= energySpent;
+        System.out.println(name + " потратил " + energySpent + " сил");
     }
 
     public void haveRest() {
         energy = 100;
-        System.out.println("Человек отдохнул и полон сил");
+        System.out.println(name + " отдохнул и полон сил");
     }
 
     public void setCurrentTransport(Transport transport) {
         this.currentTransport = transport;
-        System.out.println("Человек пересел на " + transport.getTransportName());
+        System.out.println(name + " пересел на " + transport.getTransportName());
     }
 
     public void leaveCurrentTransport() {
         this.currentTransport = null;
-        System.out.println("Человек спешился");
+        System.out.println(name + " спешился");
     }
 
     public void move(int distance, Area area) {
@@ -49,7 +47,7 @@ public class Human {
             return;
         }
         if (currentTransport == null) {
-            System.out.println("Человек идет пешком расстояние " + distance + "м по '" + area.getAreaRuName() + "' и не устает");
+            System.out.println(name + " идет пешком расстояние " + distance + "м по '" + area.getAreaRuName() + "' и не устает");
             return;
         }
         if (!currentTransport.tryMove(distance, area)) {

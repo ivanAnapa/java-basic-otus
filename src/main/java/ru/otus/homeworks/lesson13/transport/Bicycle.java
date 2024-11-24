@@ -4,7 +4,7 @@ import ru.otus.homeworks.lesson13.Area;
 import ru.otus.homeworks.lesson13.Human;
 
 public class Bicycle extends Transport {
-    Human humanLocal;
+    private final Human humanLocal;
 
     public Bicycle(String bicycleModel, Human human) {
         transportName = bicycleModel;
