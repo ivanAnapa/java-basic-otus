@@ -7,6 +7,7 @@ public abstract class Transport {
     protected int maxEnergyLevel;
     protected int currentEnergy;
     protected boolean isAvailableArea;
+    protected boolean isDriverAccepted = false;
 
     public String getTransportName() {
         return transportName;
@@ -30,5 +31,17 @@ public abstract class Transport {
         // Проверки на количство оставшейся энергии не добавлял, тк они выполняются в tryMove()
         currentEnergy -= energySpent;
         System.out.println("Запас энергии уменьшен на " + energySpent + "ед");
+    }
+
+    public void setDriver() {
+        isDriverAccepted = true;
+    }
+
+    public void removeDriver() {
+        isDriverAccepted = false;
+    }
+
+    public boolean isDriverAccepted() {
+        return isDriverAccepted;
     }
 }

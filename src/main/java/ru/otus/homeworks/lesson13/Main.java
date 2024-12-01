@@ -49,5 +49,15 @@ public class Main {
         vasiliy.move(80, Area.Plain);
         vasiliy.haveRest();
         vasiliy.move(80, Area.Plain);
+
+        System.out.println("\n******** Проверка: водитель не может ехать одновременно на 2 транспортах ********");
+        vasiliy.setCurrentTransport(transports[0]);
+
+
+        System.out.println("\n******** Проверка: у транспорта не может быть более 1 водителя ********");
+        Human petr = new Human("Петр");
+        petr.setCurrentTransport(transports[1]);
+        vasiliy.setCurrentTransport(transports[1]);
+
     }
 }

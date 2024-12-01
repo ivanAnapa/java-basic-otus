@@ -32,13 +32,26 @@ public class Human {
     }
 
     public void setCurrentTransport(Transport transport) {
-        this.currentTransport = transport;
-        System.out.println(name + " пересел на " + transport.getTransportName());
+        if (transport.isDriverAccepted()) {
+            System.out.println("Место водителя в транспорте уже занято");
+            return;
+        }
+        // Освобождение водительнского места на предыдущем транспорте
+        leaveCurrentTransport();
+        // Установка нового транспорта
+        currentTransport = transport;
+        currentTransport.setDriver();
+        System.out.println(name + " пересел на " + currentTransport.getTransportName());
     }
 
     public void leaveCurrentTransport() {
-        this.currentTransport = null;
-        System.out.println(name + " спешился");
+        if (currentTransport != null) {
+            currentTransport.removeDriver();
+            this.currentTransport = null;
+            System.out.println(name + " спешился");
+        } else {
+            System.out.println(name + " не может спешиться, тк он не в транспорте");
+        }
     }
 
     public void move(int distance, Area area) {
