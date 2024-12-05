@@ -27,7 +27,5 @@ public class MyApp {
         }
 
         personDataBase.findById(999L);
-
-
     }
 }
