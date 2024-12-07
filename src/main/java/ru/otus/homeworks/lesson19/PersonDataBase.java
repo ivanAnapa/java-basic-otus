@@ -1,6 +1,7 @@
 package ru.otus.homeworks.lesson19;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -13,10 +14,16 @@ import java.util.Map;
  * isEmployee(Long id) - O(1) - true если Employee имеет любой другой Position
  */
 public class PersonDataBase {
-    private Map<Long, Person> persons;
+    private final Map<Long, Person> persons;
+    private final HashSet<Position> managers = new HashSet<>();
 
     public PersonDataBase() {
         persons = new HashMap<>();
+
+        managers.add(Position.MANAGER);
+        managers.add(Position.DIRECTOR);
+        managers.add(Position.BRANCH_DIRECTOR);
+        managers.add(Position.SENIOR_MANAGER);
     }
 
     public Person findById(long id) {
@@ -32,10 +39,7 @@ public class PersonDataBase {
     }
 
     public Boolean isManager(Person person) {
-        return person.getPosition().equals(Position.MANAGER)
-                || person.getPosition().equals(Position.DIRECTOR)
-                || person.getPosition().equals(Position.BRANCH_DIRECTOR)
-                || person.getPosition().equals(Position.SENIOR_MANAGER);
+        return managers.contains(person.getPosition());
     }
 
     public Boolean isEmployee(Long id) {
