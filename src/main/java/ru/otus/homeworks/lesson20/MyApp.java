@@ -49,8 +49,6 @@ public class MyApp {
         } else {
             System.out.println("Неверно указано название файла");
         }
-
-
     }
 
     private static void printFile(File file) {
@@ -115,7 +113,7 @@ public class MyApp {
              2. Удаляем закрывающую фигурную скобку
              3. Добавляем запятую к имеющемуся тексту
              4. Добавляем в новую строку запись
-             5. Добавляем закрывающую фигурную скобку в новую строку запись
+             5. Добавляем закрывающую фигурную скобку в новую строку
              */
             if (inr.read() != -1) {
                 String tmp = new BufferedReader(inr).lines().collect(Collectors.joining("\n"));
