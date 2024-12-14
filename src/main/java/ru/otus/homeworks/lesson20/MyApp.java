@@ -13,42 +13,91 @@ import java.util.stream.Collectors;
  * Далее программа запрашивает имя файла, с которым хочет работать пользователь
  * Содержимое файла выводится в консоль
  * Затем любую введенную пользователем строку необходимо записывать в указанный файл
+ * <p>
+ * Для txt файла дописываем с новой строки введенный текст из консоли
+ * Для csv файла дописываем в существующую строку введенный текст из консоли, предварительно добавив "," + "пробел"
+ * Для json файла дописываем с новой строки строкю введенный текст из консоли в формате "ключ": "значение". Если запись не первая, то к предыдущей строке добавляем ","
  */
 public class MyApp {
-    private static File file1 = new File("file1.txt");
-    private static File file2 = new File("file2.csv");
-    private static File file3 = new File("file3.json");
+    private static final String filesDir = "files";
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Список файлов: \n" + file1.getName() + "\n" + file2.getName() + "\n" + file3.getName());
+        File folder = new File(filesDir);
+        File[] listOfFiles = folder.listFiles();
+        if (listOfFiles != null) {
+            System.out.println("Список существующих файлов:");
+            for (File listOfFile : listOfFiles) {
+                if (listOfFile.isFile()) {
+                    System.out.println("- " + listOfFile.getName());
+                }
+            }
+        } else {
+            System.out.println("Файлов нет, каталог пуст");
+        }
 
         System.out.println("Введите название и формат файла, с которым хотите работать:");
-        String selectedFileName = scanner.nextLine();
-        if (selectedFileName.equals(file1.getName())) {
-            printFile(file1);
-            System.out.println("\nВведите текст, который нужно добавить в файл:");
-            writeNewRowToTxtFile(new Scanner(System.in).nextLine());
-            printFile(file1);
-        } else if (selectedFileName.equals(file2.getName())) {
-            printFile(file2);
-            System.out.println("\nВведите текст, который нужно добавить в файл:");
-            writeToCsvFile(new Scanner(System.in).nextLine());
-            printFile(file2);
-        } else if (selectedFileName.equals(file3.getName())) {
-            printFile(file3);
-            System.out.println("\nВведите текст, который нужно добавить в JSON файл в качестве ключа:");
-            String key = new Scanner(System.in).nextLine();
-            System.out.println("Введите текст, который нужно добавить в JSON файл в качестве значения:");
-            String value = new Scanner(System.in).nextLine();
-            Map<String, String> map = new HashMap<>();
-            map.put(key, value);
-            writeToJsonFile(map);
-            printFile(file3);
+        String selectedFileName = filesDir + "/" + scanner.nextLine();
+        if (viewFileByPath(selectedFileName)) {
+            String selectedFileFormat = selectedFileName.substring(selectedFileName.indexOf(".") + 1);
+            File file = new File(selectedFileName);
+            switch (selectedFileFormat) {
+                case "txt":
+                    System.out.println("\nВведите текст, который нужно добавить в файл:");
+                    writeNewRowToTxtFile(selectedFileName, new Scanner(System.in).nextLine());
+                    printFile(file);
+                    break;
+                case "csv":
+                    System.out.println("\nВведите текст, который нужно добавить в файл:");
+                    writeToCsvFile(selectedFileName, new Scanner(System.in).nextLine());
+                    printFile(file);
+                    break;
+                case "json":
+                    System.out.println("\nВведите текст, который нужно добавить в JSON файл в качестве ключа:");
+                    String key = new Scanner(System.in).nextLine();
+                    System.out.println("Введите текст, который нужно добавить в JSON файл в качестве значения:");
+                    String value = new Scanner(System.in).nextLine();
+                    Map<String, String> map = new HashMap<>();
+                    map.put(key, value);
+                    writeToJsonFile(selectedFileName, map);
+                    printFile(file);
+                    break;
+                default:
+                    System.out.println("Такого формата не планировалось :)");
+            }
         } else {
-            System.out.println("Неверно указано название файла");
+            System.out.println("Файла не существует и создавать его мы не стали");
         }
+    }
+
+    private static boolean viewFileByPath(String filepath) {
+        File file = new File(filepath);
+        boolean isFileExists = false;
+        if (file.isFile()) {
+            printFile(file);
+            isFileExists = true;
+        } else if (!file.exists()) {
+            System.out.println("Указанного файла не существует. Создать его? (Y / N)");
+            Scanner scanner = new Scanner(System.in);
+            String needToCreate = scanner.nextLine();
+            switch (needToCreate) {
+                case "Y":
+                    try (FileWriter fw = new FileWriter(file)) {
+                        fw.write("");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    System.out.println("Файл " + filepath + " создан");
+                    printFile(file);
+                    isFileExists = true;
+                    break;
+                case "N":
+                    System.out.println("Файл не создан");
+                    break;
+            }
+        }
+        return isFileExists;
     }
 
     private static void printFile(File file) {
@@ -67,9 +116,8 @@ public class MyApp {
         System.out.println();
     }
 
-    private static void writeNewRowToTxtFile(String textForAddition) {
-        // Для текстового файла дописываем с новой строки введенный текст из консоли
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file1, true))) {
+    private static void writeNewRowToTxtFile(String fileNameAndFormat, String textForAddition) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileNameAndFormat, true))) {
             writer.newLine();
             writer.write(textForAddition);
         } catch (IOException e) {
@@ -77,18 +125,16 @@ public class MyApp {
         }
     }
 
-    private static void writeToCsvFile(String textForAddition) {
-        try (FileInputStream fis = new FileInputStream(file2)) {
-            // Есди в csv файле есть записи, то добавляем разделитель с пробелом
+    private static void writeToCsvFile(String fileName, String textForAddition) {
+        try (FileInputStream fis = new FileInputStream(fileName)) {
             if (fis.read() != -1) {
-                try (FileOutputStream out = new FileOutputStream(file2, true)) {
+                try (FileOutputStream out = new FileOutputStream(fileName, true)) {
                     out.write(", ".getBytes(StandardCharsets.UTF_8));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            // Дописываем в ту же строку введенный текст из консоли
-            try (FileOutputStream out = new FileOutputStream(file2, true)) {
+            try (FileOutputStream out = new FileOutputStream(fileName, true)) {
                 byte[] buffer = textForAddition.getBytes(StandardCharsets.UTF_8);
                 out.write(buffer);
             } catch (IOException e) {
@@ -99,31 +145,24 @@ public class MyApp {
         }
     }
 
-    private static void writeToJsonFile(Map<String, String> map) {
+    private static void writeToJsonFile(String fileName, Map<String, String> map) {
         String textForAddition = "";
         for (Map.Entry<String, String> entry : map.entrySet()) {
             textForAddition = "  \"" + entry.getKey() + "\": \"" + entry.getValue() + "\"";
         }
         try (
-                FileInputStream fis = new FileInputStream(file3);
+                FileInputStream fis = new FileInputStream(fileName);
                 BufferedInputStream bis = new BufferedInputStream(fis);
                 InputStreamReader inr = new InputStreamReader(bis)) {
-            /* Есди в JSON файле есть записи, то переписываем файл:
-             1. Вычитываем файл
-             2. Удаляем закрывающую фигурную скобку
-             3. Добавляем запятую к имеющемуся тексту
-             4. Добавляем в новую строку запись
-             5. Добавляем закрывающую фигурную скобку в новую строку
-             */
             if (inr.read() != -1) {
                 String tmp = new BufferedReader(inr).lines().collect(Collectors.joining("\n"));
                 String fileChanged = tmp.substring(0, tmp.length() - 2) + ","; // Удаление "}", переноса строки и добавление запятой
-                try (FileWriter fw = new FileWriter(file3, false)) {
+                try (FileWriter fw = new FileWriter(fileName, false)) {
                     fw.write(""); // "Обнуление" файла
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file3, true))) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
                     writer.write("{");
                     writer.write(fileChanged);
                     writer.newLine();
@@ -134,8 +173,7 @@ public class MyApp {
                     e.printStackTrace();
                 }
             } else {
-                // Есди в JSON файле нет записей, то добавляем "{" в первую строку и "}" в последннюю, а между ними текст
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file3, true))) {
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, true))) {
                     writer.write("{");
                     writer.newLine();
                     writer.write(textForAddition);
