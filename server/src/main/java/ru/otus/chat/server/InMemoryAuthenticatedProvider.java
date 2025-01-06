@@ -20,6 +20,13 @@ public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
             this.username = username;
             this.role = role;
         }
+
+        public User(String login, String password, String username) {
+            this.login = login;
+            this.password = password;
+            this.username = username;
+            this.role = Customer;
+        }
     }
 
     private List<User> users;
@@ -47,6 +54,15 @@ public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
         return null;
     }
 
+    private UserRole getUserRoleByUsername(String username) {
+        for (User u : users) {
+            if (u.username.equals(username)) {
+                return u.role;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean authenticate(ClientHandler clientHandler, String login, String password) {
         String authUsername = getUsernameByLoginAndPassword(login, password);
@@ -59,6 +75,7 @@ public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
             return false;
         }
         clientHandler.setUsername(authUsername);
+        clientHandler.setUserRole(getUserRoleByUsername(authUsername));
         server.subscribe(clientHandler);
         clientHandler.sendMsg("/authok " + authUsername);
 
@@ -97,22 +114,22 @@ public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
             clientHandler.sendMsg("Указанное имя пользователя уже занято");
             return false;
         }
-        users.add(new User(login, password, username, Customer));
+        users.add(new User(login, password, username));
         clientHandler.setUsername(username);
+        clientHandler.setUserRole(getUserRoleByUsername(username));
         server.subscribe(clientHandler);
         clientHandler.sendMsg("/regok " + username);
         return true;
     }
 
     @Override
-    public boolean setUserRoleForUsername(ClientHandler clientHandler, UserRole role, String username) {
+    public boolean kickUsername(ClientHandler clientHandler, String username) {
         for (User u : users) {
             if (u.username.equals(username)) {
-                u.role = role;
-                clientHandler.sendMsg("/newroleok " + username);
+                server.kick(clientHandler);
                 return true;
             } else {
-                clientHandler.sendMsg("Роль не назначена, тк такого пользователя нет");
+                clientHandler.sendMsg("Такого пользователя нет");
             }
         }
         return false;

@@ -4,6 +4,6 @@ public interface AuthenticatedProvider {
     void initialize();
     boolean authenticate(ClientHandler clientHandler, String login, String password );
     boolean registration(ClientHandler clientHandler, String login, String password, String username );
-    boolean setUserRoleForUsername(ClientHandler clientHandler, UserRole role, String username);
+    boolean kickUsername(ClientHandler clientHandler, String username);
 
 }

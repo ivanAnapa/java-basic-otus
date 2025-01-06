@@ -40,6 +40,11 @@ public class Server {
         broadcastMessage("Из чата вышел: " + clientHandler.getUsername());
     }
 
+    public void kick(ClientHandler clientHandler) {
+        clients.remove(clientHandler);
+        broadcastMessage("Из чата удален: " + clientHandler.getUsername());
+    }
+
     public void broadcastMessage(String message) {
         for (ClientHandler c : clients) {
             c.sendMsg(message);

@@ -39,45 +39,25 @@ public class ClientHandler {
                         // /auth login password
                         if (message.startsWith("/auth ")) {
                             String[] element = message.split(" ");
-                            if (element.length != 3){
+                            if (element.length != 3) {
                                 sendMsg("Неверный формат команды /auth");
                                 continue;
                             }
                             if (server.getAuthenticatedProvider()
-                                    .authenticate(this, element[1], element[2])){
+                                    .authenticate(this, element[1], element[2])) {
                                 break;
                             }
                         }
                         // /reg login password username
                         if (message.startsWith("/reg ")) {
                             String[] element = message.split(" ");
-                            if (element.length != 4){
+                            if (element.length != 4) {
                                 sendMsg("Неверный формат команды /reg");
                                 continue;
                             }
                             if (server.getAuthenticatedProvider()
-                                    .registration(this, element[1], element[2], element[3])){
+                                    .registration(this, element[1], element[2], element[3])) {
                                 break;
-                            }
-                        }
-                        if (message.startsWith("/newrole ")) {
-                            String[] element = message.split(" ");
-                            if (element.length != 3){
-                                sendMsg("Неверный формат команды /newrole");
-                                continue;
-                            }
-                            if (this.userRole == UserRole.Admin) {
-                                UserRole newRole = UserRole.Customer;
-                                if (element[1].equalsIgnoreCase("Admin")) {
-                                    newRole = UserRole.Admin;
-                                }
-                                if (server.getAuthenticatedProvider()
-                                        .setUserRoleForUsername(this, newRole, element[2])){
-                                    sendMsg("Пользователю " + element[2] + " назначена роль " + newRole);
-                                    break;
-                                }
-                            } else {
-                                sendMsg("Раздавать/отнимать роли у других пользователей может только админ :)");
                             }
                         }
                     }
@@ -90,9 +70,23 @@ public class ClientHandler {
                             sendMsg("/exitok");
                             break;
                         }
-
+                        // /kick username
+                        if (message.startsWith("/kick")) {
+                            String[] element = message.split(" ");
+                            if (element.length != 2) {
+                                sendMsg("Неверный формат команды /kick");
+                                continue;
+                            }
+                               if (this.userRole.equals(UserRole.Admin)) {
+                                   server.getAuthenticatedProvider().kickUsername(this, element[1]);
+                                   sendMsg("Пользователь " + element[1] + " отключен от чата");
+                               }
+                               else {
+                                sendMsg("Отключать других пользователей может только админ");
+                            }
+                        }
                     } else {
-                        server.broadcastMessage(username + " : " + message);
+                        server.broadcastMessage(username + ": " + message);
                     }
                 }
             } catch (IOException e) {
@@ -142,5 +136,9 @@ public class ClientHandler {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void setUserRole(UserRole role) {
+        this.userRole = role;
     }
 }
