@@ -10,6 +10,9 @@ public class App {
         System.out.println("Введено число " + a);
         System.out.println("Hello world!");
 
+        // Узнать кол-во ядер ЦП
+        System.out.println(Runtime.getRuntime().availableProcessors());
+
    //     System.out.println("\u0022");
    //     System.out.println('\u0027');
     }
