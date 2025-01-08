@@ -126,12 +126,11 @@ public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
     public boolean kickUsername(ClientHandler clientHandler, String username) {
         for (User u : users) {
             if (u.username.equals(username)) {
-                server.kick(clientHandler);
+                server.unsubscribe(clientHandler);
                 return true;
-            } else {
-                clientHandler.sendMsg("Такого пользователя нет");
             }
         }
+        clientHandler.sendMsg("Такого пользователя нет");
         return false;
     }
 }
