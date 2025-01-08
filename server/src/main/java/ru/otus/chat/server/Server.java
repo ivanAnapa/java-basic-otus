@@ -8,7 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Server {
     private int port;
-    private List<ClientHandler> clients;
+    protected List<ClientHandler> clients;
     private AuthenticatedProvider authenticatedProvider;
 
     public Server(int port) {

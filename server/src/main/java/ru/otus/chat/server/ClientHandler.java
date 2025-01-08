@@ -12,7 +12,7 @@ public class ClientHandler {
     private DataInputStream in;
     private DataOutputStream out;
 
-    private String username;
+    protected String username;
     private UserRole userRole;
 
     public ClientHandler(Socket socket, Server server) throws IOException {

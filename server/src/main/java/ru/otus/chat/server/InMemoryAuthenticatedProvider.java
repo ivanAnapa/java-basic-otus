@@ -124,9 +124,9 @@ public class InMemoryAuthenticatedProvider implements AuthenticatedProvider {
 
     @Override
     public boolean kickUsername(ClientHandler clientHandler, String username) {
-        for (User u : users) {
-            if (u.username.equals(username)) {
-                server.unsubscribe(clientHandler);
+        for (ClientHandler c: server.clients) {
+            if (c.username.equals(username)) {
+                c.sendMsg("/exitok");
                 return true;
             }
         }
